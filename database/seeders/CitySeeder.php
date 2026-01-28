@@ -1203,6 +1203,6 @@ class CitySeeder extends Seeder
 
         ];
 
-        City::upsert($data, ["id"], ["name", "province_id"]);
+        City::upsert($data, uniqueBy: ["id"], update: ["name", "province_id"]);
     }
 }

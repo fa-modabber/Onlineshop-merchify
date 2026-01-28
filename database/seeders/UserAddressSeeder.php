@@ -13,6 +13,7 @@ class UserAddressSeeder extends Seeder
      */
     public function run(): void
     {
+        UserAddress::truncate();
         UserAddress::factory()->count(5)->create();
     }
 }

@@ -27,9 +27,9 @@ class DatabaseSeeder extends Seeder
             $this->call(SliderSeeder::class);
 
             // seeders with foreign key
-            // $this->call(ProductSeeder::class);
+            $this->call(ProductSeeder::class);
             $this->call(UserAddressSeeder::class);
-            $this->call(WishlistSeeder::class);
+            // $this->call(WishlistSeeder::class);
         });
     }
 }

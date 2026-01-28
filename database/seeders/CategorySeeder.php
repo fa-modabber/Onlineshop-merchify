@@ -36,6 +36,6 @@ class CategorySeeder extends Seeder
             ],
         ];
 
-        Category::upsert($data, ['name'], ['status']);
+        Category::upsert($data, uniqueBy: ['name'], update: ['status']);
     }
 }

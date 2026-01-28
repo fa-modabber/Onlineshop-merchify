@@ -13,6 +13,7 @@ class ContactUsSeeder extends Seeder
      */
     public function run(): void
     {
+        ContactUs::truncate();
         ContactUs::factory()->count(5)->create();
     }
 }

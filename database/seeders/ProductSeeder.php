@@ -3,10 +3,11 @@
 namespace Database\Seeders;
 
 use App\Models\Product;
+use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Storage;
-use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class ProductSeeder extends Seeder
 {
@@ -179,21 +180,20 @@ class ProductSeeder extends Seeder
 
         ];
 
-        foreach ($products as $product) {
-            $imageName = Str::random(20) . '.jpg';
+        DB::transaction(function () use ($products) {
+            foreach ($products as $product) {
+                if (!Storage::disk('public')->exists("images/products/{$product['primary_image']}")) {
 
-            Storage::disk('public')->put(
-                'products/' . $imageName,
-                file_get_contents(
-                    base_path('storage/app/seeders/products/' . $product['image'])
-                )
-            );
+                    Storage::disk('public')->put(
+                        'images/products/' . $product['primary_image'],
+                        file_get_contents(
+                            base_path('public/images/seeders/products/' . $product['primary_image'])
+                        )
+                    );
 
-            Product::create([
-                'title' => $product['title'],
-                'price' => $product['price'],
-                'image' => 'products/' . $imageName,
-            ]);
-        }
+                    Product::upsert($product, ['slug'], ['name', 'category_id', 'primary_image', 'description', 'price', 'quantity', 'status']);
+                }
+            }
+        });
     }
 }
